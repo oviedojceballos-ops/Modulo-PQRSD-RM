@@ -1,0 +1,6 @@
+{
+  "name": "Portal Técnico y Guía PQRSD Ruta Magdalena Sierra Mar",
+  "description": "Portal web de documentación técnica, manual de usuario, estado del proyecto, plan de pruebas, estrategia de despliegue y gestión de requerimientos para la aplicación desarrollada en AppSheet.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
