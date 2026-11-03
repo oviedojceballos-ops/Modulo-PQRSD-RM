@@ -84,6 +84,17 @@ test('calculateHealthScore discounts penalties appropriately', () => {
   assert.equal(score, 100 - 15 - 10 - 1); // 74
 });
 
+test('calculateHealthScore returns 100 when all findings are resolved or validated', () => {
+  const findings: { severity: 'high' | 'medium' | 'info'; resolutionStatus: string; isResolved: boolean }[] = [
+    { severity: 'high', resolutionStatus: 'Anomalía Descartada (Resuelto)', isResolved: true },
+    { severity: 'medium', resolutionStatus: 'Validado por el Desarrollador', isResolved: true },
+    { severity: 'medium', resolutionStatus: 'Resuelto por Arquitectura', isResolved: true },
+    { severity: 'info', resolutionStatus: 'Validado por el Desarrollador', isResolved: true },
+  ];
+  const score = calculateHealthScore(findings);
+  assert.equal(score, 100);
+});
+
 test('calculateRequirementsProgress computes statistics properly', () => {
   const items: RequirementItem[] = [
     { id: '1', code: 'RF-01', title: 'A', description: '', type: 'Funcional', priority: 'Alta', status: 'Completado', component: '', verifiedInAppSheet: true },

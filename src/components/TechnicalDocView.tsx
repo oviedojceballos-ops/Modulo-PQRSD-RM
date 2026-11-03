@@ -356,6 +356,113 @@ export const TechnicalDocView: React.FC = () => {
               ))}
             </div>
           </div>
+
+          {/* Visual Architecture & UI Component Gallery */}
+          <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-xs space-y-5">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-blue-100 text-blue-800 mb-1 inline-block">
+                  Evidencia Visual del Entorno
+                </span>
+                <h3 className="text-lg font-bold text-slate-900">
+                  Referencias de Arquitectura y Vistas Desplegadas en AppSheet
+                </h3>
+              </div>
+              <span className="text-xs text-slate-400 font-mono">
+                Vistas Canónicas v1.000572
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2 flex flex-col justify-between">
+                <div>
+                  <div className="h-40 rounded-lg overflow-hidden bg-slate-200 flex items-center justify-center mb-2">
+                    <img
+                      src="/assets/manual/actualizacion_1.png"
+                      alt="Dashboard Analítico"
+                      className="w-full h-full object-cover object-top hover:scale-105 transition-transform"
+                      loading="lazy"
+                    />
+                  </div>
+                  <h4 className="text-xs font-bold text-slate-900">
+                    Dashboard Analítico en Tiempo Real
+                  </h4>
+                  <p className="text-[11px] text-slate-500 mt-1 line-clamp-2">
+                    Tableros interactivos con métricas de servicios, gestores, estados y filtros dinámicos.
+                  </p>
+                </div>
+                <span className="text-[10px] font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded self-start">
+                  Vista DashBoard (menu)
+                </span>
+              </div>
+
+              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2 flex flex-col justify-between">
+                <div>
+                  <div className="h-40 rounded-lg overflow-hidden bg-slate-200 flex items-center justify-center mb-2">
+                    <img
+                      src="/assets/manual/pantallazo_1.png"
+                      alt="Bandeja de Radicados"
+                      className="w-full h-full object-cover object-top hover:scale-105 transition-transform"
+                      loading="lazy"
+                    />
+                  </div>
+                  <h4 className="text-xs font-bold text-slate-900">
+                    Bandeja Principal y Semáforo Legal
+                  </h4>
+                  <p className="text-[11px] text-slate-500 mt-1 line-clamp-2">
+                    Seguimiento de términos conforme a la Ley 1755 (10 y 15 días hábiles).
+                  </p>
+                </div>
+                <span className="text-[10px] font-mono text-blue-700 bg-blue-50 px-2 py-0.5 rounded self-start">
+                  Vista Lista de Pqrs
+                </span>
+              </div>
+
+              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2 flex flex-col justify-between">
+                <div>
+                  <div className="h-40 rounded-lg overflow-hidden bg-slate-200 flex items-center justify-center mb-2">
+                    <img
+                      src="/assets/manual/pantallazo_10.png"
+                      alt="Formulario de Gestión"
+                      className="w-full h-full object-cover object-top hover:scale-105 transition-transform"
+                      loading="lazy"
+                    />
+                  </div>
+                  <h4 className="text-xs font-bold text-slate-900">
+                    Formulario de Gestión y Contestación
+                  </h4>
+                  <p className="text-[11px] text-slate-500 mt-1 line-clamp-2">
+                    Captura de respuesta oficial, asignación de estado y adjuntos técnicos.
+                  </p>
+                </div>
+                <span className="text-[10px] font-mono text-amber-700 bg-amber-50 px-2 py-0.5 rounded self-start">
+                  Vista GestionPqr_Form
+                </span>
+              </div>
+
+              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2 flex flex-col justify-between">
+                <div>
+                  <div className="h-40 rounded-lg overflow-hidden bg-slate-200 flex items-center justify-center mb-2">
+                    <img
+                      src="/assets/manual/novedad_nov_13.png"
+                      alt="Reporte Excel ANI"
+                      className="w-full h-full object-cover object-top hover:scale-105 transition-transform"
+                      loading="lazy"
+                    />
+                  </div>
+                  <h4 className="text-xs font-bold text-slate-900">
+                    Reporte Consolidado en Excel (.xlsx)
+                  </h4>
+                  <p className="text-[11px] text-slate-500 mt-1 line-clamp-2">
+                    Libro generado con membrete oficial de Ruta Magdalena Sierra Mar para auditoría ANI.
+                  </p>
+                </div>
+                <span className="text-[10px] font-mono text-purple-700 bg-purple-50 px-2 py-0.5 rounded self-start">
+                  Bot Todas las Pqr
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 

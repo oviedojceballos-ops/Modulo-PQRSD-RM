@@ -10,12 +10,86 @@ import {
   ExternalLink,
   Code2,
   Copy,
-  Printer
+  Printer,
+  Image as ImageIcon,
+  Clock,
+  Sparkles,
+  ShieldCheck,
+  FileSpreadsheet
 } from 'lucide-react';
 
 export const DownloadsView: React.FC = () => {
   const [selectedDocKey, setSelectedDocKey] = useState<string>('manual-usuario');
   const [copied, setCopied] = useState(false);
+
+  const officialPdfDeliverables = [
+    {
+      id: 'manual-usuario',
+      title: 'Manual Técnico y de Usuario PQRSD Oficial',
+      format: 'PDF (.pdf)',
+      tag: 'Manual Operativo',
+      color: 'amber',
+      downloadUrl: '/assets/aistudio/Manual_Tecnico_y_Usuario_PQRSD_a25cf70c.pdf',
+      downloadName: 'Manual_Tecnico_y_Usuario_PQRSD_Ruta_Magdalena.pdf',
+      size: '5 Páginas Oficiales',
+      summary: 'Manual estandarizado para la radicación, trámite, contestación formal en PDF, despacho por correo corporativo y apelaciones.'
+    },
+    {
+      id: 'pantallazos-app',
+      title: 'Dossier de Pantallazos Oficiales de la Aplicación',
+      format: 'PDF (.pdf)',
+      tag: 'Guía Visual HD',
+      color: 'emerald',
+      downloadUrl: '/assets/aistudio/Pantallazos_de_la_aplicaci_n_Modulo_de_Gesti_n_PQRSD_999c3d6f.pdf',
+      downloadName: 'Pantallazos_Modulo_Gestion_PQRSD_Ruta_Magdalena.pdf',
+      size: '8 Páginas con Capturas',
+      summary: 'Secuencia completa de capturas de pantalla de la app en AppSheet: formulario de radicación, detalle de caso, gestiones, anexos y despacho.'
+    },
+    {
+      id: 'actualizaciones-app',
+      title: 'Actualizaciones y Nuevas Funciones de la App',
+      format: 'PDF (.pdf)',
+      tag: 'Nuevas Funciones',
+      color: 'indigo',
+      downloadUrl: '/assets/aistudio/Actualizaciones_aplicadas_en_la_app_b2df1755.pdf',
+      downloadName: 'Actualizaciones_Aplicadas_App_PQRSD.pdf',
+      size: '6 Páginas Técnicas',
+      summary: 'Documentación del nuevo Dashboard interactivo, edición rápida de correo PQR, consulta de anexos, y plantillas de correo de Apps Script.'
+    },
+    {
+      id: 'novedad-dias-habiles',
+      title: 'Actualización de Días Hábiles, Semáforos y Reportes',
+      format: 'PDF (.pdf)',
+      tag: 'Ley 1755 / SLA',
+      color: 'rose',
+      downloadUrl: '/assets/aistudio/M_dulo_de_Gesti_n_PQRSD_Actualizacion_01-11-2026_03659520.pdf',
+      downloadName: 'Actualizacion_Dias_Habiles_y_Reportes_PQRSD.pdf',
+      size: '6 Páginas Regulatorias',
+      summary: 'Validación explícita de días hábiles colombianos excluyendo festivos 2025–2036, mensajes de alerta legal y módulo de reportes Excel.'
+    },
+    {
+      id: 'appsheet-doc',
+      title: 'Especificación Técnica Integral desde AppSheet',
+      format: 'PDF (.pdf)',
+      tag: 'Toolkit v1.9.0',
+      color: 'blue',
+      downloadUrl: '/assets/aistudio/Application_Documentation_desde_Appsheet_07eab6e9.pdf',
+      downloadName: 'Application_Documentation_AppSheet_PQRSD.pdf',
+      size: 'Documentación Canónica',
+      summary: 'Exportación exhaustiva con las 38 tablas, 955 columnas, 4 slices, 50 views, 67 format rules, 134 actions y expresiones AppSheet.'
+    },
+    {
+      id: 'doc-tecnica-md',
+      title: 'Documentación Técnica en Formato Markdown (.md)',
+      format: 'Markdown (.md)',
+      tag: 'Diccionario de Datos',
+      color: 'violet',
+      downloadUrl: '/assets/aistudio/Pqrs_RM_IpRev-678335064_TechnicalDocumentation_d626990c.md',
+      downloadName: 'Pqrs_RM_TechnicalDocumentation.md',
+      size: '22 KB Markdown',
+      summary: 'Diccionario de datos con fórmulas matriciales, catálogo de automatizaciones y matriz de dependencias estáticas.'
+    }
+  ];
 
   const documentOutlines = [
     {
@@ -39,26 +113,63 @@ export const DownloadsView: React.FC = () => {
       ]
     },
     {
-      id: 'doc-tecnica',
-      title: '2. Documentación Técnica del Sistema (AppSheet)',
-      format: 'Markdown (.md) / Toolkit v1.9.0',
-      downloadUrl: '/assets/aistudio/Pqrs_RM_IpRev-678335064_TechnicalDocumentation_d626990c.md',
-      downloadName: 'Pqrs_RM_TechnicalDocumentation.md',
-      size: '22 KB / 12 Tablas / 198 Columnas',
-      summary: 'Especificación detallada de schemas, expresiones AppSheet, relaciones estáticas (1.332 aristas) y fórmulas matriciales.',
+      id: 'pantallazos-app',
+      title: '2. Dossier Fotográfico y Pantallazos de la Aplicación',
+      format: 'PDF (.pdf)',
+      downloadUrl: '/assets/aistudio/Pantallazos_de_la_aplicaci_n_Modulo_de_Gesti_n_PQRSD_999c3d6f.pdf',
+      downloadName: 'Pantallazos_Modulo_Gestion_PQRSD_Ruta_Magdalena.pdf',
+      size: '8 Páginas con Capturas',
+      summary: 'Dossier visual con capturas reales de la aplicación en AppSheet.',
       sections: [
-        '1. Resumen de Componentes: 12 tablas, 198 columnas, 4 slices, 50 vistas, 134 acciones, 10 bots, 17 tareas',
-        '2. Relaciones de Datos (Foreign Keys y REF_ROWS)',
-        '3. Componentes de Mayor Impacto (Change Impact Hotspots: Pqrs.NumeroInterno, Tipo_Solicitud, ID_PQR)',
-        '4. Diccionario de Datos Completo (Pqrs, GestionPqr, Gestores, Departamentos, Filtros, Noticias, ConsecutivosPqr, etc.)',
-        '5. Fórmulas Matriciales de Negocio (_xlfn.NETWORKDAYS.INTL con LAMBDA y MAP)',
-        '6. Catálogo de Bots y Automatizaciones (Apps Script Projects: Anexos, Gestion desde Corporativo, Notificar_Departamento, Apelacion_Deepseek)',
-        '7. Hallazgos de Salud de la Aplicación (21 findings analizados)'
+        '1. Vista Inicial de la Aplicación (Bandeja con semáforos, consecutivos y departamentos)',
+        '2. Formulario de Solicitud Inicial y Despliegue de los 5 Tipos Canónicos',
+        '3. Formulario Completo con Prioridad Legal, datos +57 y clasificación vial',
+        '4. Ficha de Detalle de PQR Radicada y Vistas Relacionadas',
+        '5. Módulo de Archivos Anexados y Barra de Acciones/Disparadores',
+        '6. Flujo de Gestión Inteligente y Notificación por Correo al Gestor',
+        '7. Formulario Oficial de Gestión de Respuestas y Adjuntos recomendados <15 MB',
+        '8. Ficha de Gestión Culminada con Despacho de Correo Completado'
+      ]
+    },
+    {
+      id: 'actualizaciones-app',
+      title: '3. Dossier de Actualizaciones y Nuevas Funciones',
+      format: 'PDF (.pdf)',
+      downloadUrl: '/assets/aistudio/Actualizaciones_aplicadas_en_la_app_b2df1755.pdf',
+      downloadName: 'Actualizaciones_Aplicadas_App_PQRSD.pdf',
+      size: '6 Páginas Técnicas',
+      summary: 'Nuevas características incorporadas al módulo de PQRSD.',
+      sections: [
+        '1. Creación de Dashboard Interactivo con Gráficos de Rosca y Barras',
+        '2. Modal Rápido para Editar Correo PQR sin alterar estado de caso',
+        '3. Botón y Formulario para Anexar Archivos Posteriores',
+        '4. Acción Consultar Archivos para visualización de todos los gestores',
+        '5. Matriz de Acciones Granulares (Administrador vs Gestor)',
+        '6. Plantillas Oficiales de Correo Apps Script (Nueva PQR, Recordatorio Atendida, Apelación)',
+        '7. Campos de Auditoría ContadorNotificacion y UltimaNotificacion'
+      ]
+    },
+    {
+      id: 'novedad-dias-habiles',
+      title: '4. Actualización de Días Hábiles, Semáforos y Reportes',
+      format: 'PDF (.pdf)',
+      downloadUrl: '/assets/aistudio/M_dulo_de_Gesti_n_PQRSD_Actualizacion_01-11-2026_03659520.pdf',
+      downloadName: 'Actualizacion_Dias_Habiles_y_Reportes_PQRSD.pdf',
+      size: '6 Páginas Regulatorias',
+      summary: 'Ajuste normativo de días hábiles colombianos según Ley 1755 de 2015.',
+      sections: [
+        '1. Validación Explícita de Días Hábiles Descontando Feriados en Colombia',
+        '2. Semáforo Rojo para PQRSD Vencidas (Superando 10 o 15 días hábiles)',
+        '3. Semáforo Amarillo para PQRSD Abiertas Vigentes dentro del Plazo',
+        '4. Semáforo Verde para Casos Atendidos o Cerrados Oportunamente',
+        '5. Reemplazo del campo Prioridad por Prioridad Solicitud (General vs Documentos)',
+        '6. Módulo Historial reportes y Generar Reporte con Filtros por Fechas',
+        '7. Plantilla Oficial de Exportación a Libros Excel (.xlsx)'
       ]
     },
     {
       id: 'plan-pruebas',
-      title: '3. Plan de Pruebas de Software (QA & UAT)',
+      title: '5. Plan de Pruebas de Software (QA & UAT)',
       format: 'Documento / Matriz de Verificación',
       downloadUrl: '#export-pruebas',
       downloadName: 'Plan_de_Pruebas_PQRSD_Ruta_Magdalena.md',
@@ -77,7 +188,7 @@ export const DownloadsView: React.FC = () => {
     },
     {
       id: 'estrategia-despliegue',
-      title: '4. Estrategia de Despliegue y Rollback Plan',
+      title: '6. Estrategia de Despliegue y Rollback Plan',
       format: 'Guía de Despliegue / DevOps Cloud',
       downloadUrl: '#export-despliegue',
       downloadName: 'Estrategia_de_Despliegue_PQRSD.md',
@@ -93,7 +204,7 @@ export const DownloadsView: React.FC = () => {
     },
     {
       id: 'guia-mantenimiento',
-      title: '5. Guía de Configuración y Mantenimiento del Entorno',
+      title: '7. Guía de Configuración y Mantenimiento del Entorno',
       format: 'Manual de Administración y Soporte',
       downloadUrl: '#export-mantenimiento',
       downloadName: 'Guia_Mantenimiento_Entorno_PQRSD.md',
@@ -114,7 +225,6 @@ export const DownloadsView: React.FC = () => {
 
   const handleDownloadGenerated = (doc: typeof documentOutlines[0]) => {
     if (doc.downloadUrl.startsWith('/assets/')) {
-      // Direct file download
       const link = document.createElement('a');
       link.href = doc.downloadUrl;
       link.download = doc.downloadName;
@@ -122,8 +232,7 @@ export const DownloadsView: React.FC = () => {
       link.click();
       document.body.removeChild(link);
     } else {
-      // Generate formatted Markdown document
-      const content = `# ${doc.title}\n\n**Formato:** ${doc.format}\n**Concesión Vial:** Ruta Magdalena Sierra Mar\n**Fecha de Emisión:** Noviembre 2026\n**Versión:** 1.000572\n\n## Resumen Ejecutivo\n${doc.summary}\n\n## Estructura y Secciones Oficiales\n${doc.sections.map(s => `- ${s}`).join('\n')}\n\n---\n*Documentación Técnica Oficial generada para la Concesión Vial Ruta Magdalena Sierra Mar.*`;
+      const content = `# ${doc.title}\n\n**Formato:** ${doc.format}\n**Concesión Vial:** Concesión Vial Ruta Magdalena Sierra Mar\n**Fecha de Emisión:** Noviembre 2026\n**Versión:** 1.000572\n\n## Resumen Ejecutivo\n${doc.summary}\n\n## Estructura y Secciones Oficiales\n${doc.sections.map(s => `- ${s}`).join('\n')}\n\n---\n*Documentación Técnica Oficial generada para la Concesión Vial Ruta Magdalena Sierra Mar.*`;
       
       const blob = new Blob([content], { type: 'text/markdown;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
@@ -151,14 +260,17 @@ export const DownloadsView: React.FC = () => {
         <div>
           <div className="flex items-center gap-2">
             <span className="px-2.5 py-0.5 rounded text-xs font-semibold bg-emerald-100 text-emerald-800">
-              Centro de Descargas
+              Centro de Descargas Oficial
             </span>
-            <h1 className="text-xl sm:text-2xl font-bold text-slate-900">
-              Descarga de Manuales y Documentación Oficial
-            </h1>
+            <span className="px-2 py-0.5 rounded text-xs font-mono font-medium bg-slate-100 text-slate-700">
+              Documentos & Manuales PDF
+            </span>
           </div>
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mt-1">
+            Descarga de Manuales y Documentación Oficial
+          </h1>
           <p className="text-xs sm:text-sm text-slate-500 mt-1">
-            Archivos fuente, manuales en PDF, especificación técnica en Markdown y esquemas JSON del snapshot
+            Manuales oficiales en PDF, dossier de pantallazos HD, novedades aplicadas, especificación técnica y guías en Markdown.
           </p>
         </div>
 
@@ -173,170 +285,59 @@ export const DownloadsView: React.FC = () => {
         </div>
       </div>
 
-      {/* Grid: Document Cards & Download Links */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        
-        {/* Card 1: Manual de Usuario PDF */}
-        <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col justify-between space-y-4 hover:border-slate-300 transition-all">
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-amber-100 text-amber-800 font-mono">
-                PDF OFICIAL
-              </span>
-              <span className="text-[11px] text-slate-400">Manual Operativo</span>
-            </div>
-            <h3 className="text-base font-bold text-slate-900">
-              Manual Técnico y de Usuario PQRSD
-            </h3>
-            <p className="text-xs text-slate-600 leading-relaxed">
-              Documento formal con la cobertura de los 14 servicios viales, matriz de acceso, radicación, semáforo legal y exportaciones.
-            </p>
-          </div>
-
-          <a
-            href="/assets/aistudio/Manual_Tecnico_y_Usuario_PQRSD_a25cf70c.pdf"
-            download="Manual_Tecnico_y_Usuario_PQRSD_Ruta_Magdalena.pdf"
-            className="w-full py-2.5 px-3 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs rounded-xl flex items-center justify-center gap-2 transition-colors shadow-xs"
-          >
-            <Download className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Descargar Manual PDF</span>
-          </a>
+      {/* Grid: Official PDF Deliverables Cards */}
+      <div className="space-y-3">
+        <div className="flex items-center justify-between px-1">
+          <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
+            <BookOpen className="w-4 h-4 text-emerald-600" />
+            <span>Documentos Oficiales del Sistema (PDF & Markdown)</span>
+          </h2>
+          <span className="text-xs text-slate-500 font-mono">
+            {officialPdfDeliverables.length} archivos verificados
+          </span>
         </div>
 
-        {/* Card 2: Technical Documentation Markdown */}
-        <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col justify-between space-y-4 hover:border-slate-300 transition-all">
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-blue-100 text-blue-800 font-mono">
-                MARKDOWN (.MD)
-              </span>
-              <span className="text-[11px] text-slate-400">Toolkit v1.9.0</span>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {officialPdfDeliverables.map((doc) => (
+            <div
+              key={doc.id}
+              className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col justify-between space-y-4 hover:border-slate-300 transition-all group"
+            >
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded font-mono ${
+                    doc.color === 'amber' ? 'bg-amber-100 text-amber-800' :
+                    doc.color === 'emerald' ? 'bg-emerald-100 text-emerald-800' :
+                    doc.color === 'indigo' ? 'bg-indigo-100 text-indigo-800' :
+                    doc.color === 'rose' ? 'bg-rose-100 text-rose-800' :
+                    doc.color === 'blue' ? 'bg-blue-100 text-blue-800' :
+                    'bg-violet-100 text-violet-800'
+                  }`}>
+                    {doc.format}
+                  </span>
+                  <span className="text-[11px] text-slate-400 font-mono">{doc.size}</span>
+                </div>
+                
+                <h3 className="text-sm sm:text-base font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">
+                  {doc.title}
+                </h3>
+                
+                <p className="text-xs text-slate-600 leading-relaxed line-clamp-3">
+                  {doc.summary}
+                </p>
+              </div>
+
+              <a
+                href={doc.downloadUrl}
+                download={doc.downloadName}
+                className="w-full py-2.5 px-3 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs rounded-xl flex items-center justify-center gap-2 transition-colors shadow-xs"
+              >
+                <Download className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Descargar {doc.format}</span>
+              </a>
             </div>
-            <h3 className="text-base font-bold text-slate-900">
-              Documentación Técnica Completa
-            </h3>
-            <p className="text-xs text-slate-600 leading-relaxed">
-              Diccionario exhaustivo de las 12 tablas, 198 columnas, 134 acciones, 10 bots, slices, relaciones estáticas y change hotspots.
-            </p>
-          </div>
-
-          <a
-            href="/assets/aistudio/Pqrs_RM_IpRev-678335064_TechnicalDocumentation_d626990c.md"
-            download="Pqrs_RM_TechnicalDocumentation.md"
-            className="w-full py-2.5 px-3 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs rounded-xl flex items-center justify-center gap-2 transition-colors shadow-xs"
-          >
-            <Download className="w-3.5 h-3.5 text-blue-400" />
-            <span>Descargar Documentación (.md)</span>
-          </a>
+          ))}
         </div>
-
-        {/* Card 3: App Snapshot JSON */}
-        <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col justify-between space-y-4 hover:border-slate-300 transition-all">
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-mono">
-                SNAPSHOT JSON
-              </span>
-              <span className="text-[11px] text-slate-400">Metadatos 2.0</span>
-            </div>
-            <h3 className="text-base font-bold text-slate-900">
-              Snapshot Oficial AppSheet
-            </h3>
-            <p className="text-xs text-slate-600 leading-relaxed">
-              Estructura canónica de la aplicación con schemas de red, format rules, security filters y definiciones de bots.
-            </p>
-          </div>
-
-          <a
-            href="/assets/aistudio/Oficial_PQRSD_Ruta_Magdalena_Sierra_Mar_AppSnapshot_0c93fb2e.json"
-            download="Oficial_PQRSD_Ruta_Magdalena_Sierra_Mar_AppSnapshot.json"
-            className="w-full py-2.5 px-3 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs rounded-xl flex items-center justify-center gap-2 transition-colors shadow-xs"
-          >
-            <Download className="w-3.5 h-3.5 text-amber-400" />
-            <span>Descargar Snapshot JSON</span>
-          </a>
-        </div>
-
-        {/* Card 4: App Health JSON */}
-        <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col justify-between space-y-4 hover:border-slate-300 transition-all">
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-rose-100 text-rose-800 font-mono">
-                APP HEALTH
-              </span>
-              <span className="text-[11px] text-slate-400">21 Hallazgos</span>
-            </div>
-            <h3 className="text-base font-bold text-slate-900">
-              Reporte de Salud y Diagnóstico
-            </h3>
-            <p className="text-xs text-slate-600 leading-relaxed">
-              Auditoría estática con análisis de referencias rotas, acciones duplicadas y componentes no utilizados.
-            </p>
-          </div>
-
-          <a
-            href="/assets/aistudio/Pqrs_RM_IpRev-678335064_AppHealth_33286764.json"
-            download="Pqrs_RM_AppHealth.json"
-            className="w-full py-2.5 px-3 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs rounded-xl flex items-center justify-center gap-2 transition-colors shadow-xs"
-          >
-            <Download className="w-3.5 h-3.5 text-rose-400" />
-            <span>Descargar AppHealth (.json)</span>
-          </a>
-        </div>
-
-        {/* Card 5: App Intelligence Graph JSON */}
-        <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col justify-between space-y-4 hover:border-slate-300 transition-all">
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 font-mono">
-                INTELLIGENCE
-              </span>
-              <span className="text-[11px] text-slate-400">1.332 Aristas</span>
-            </div>
-            <h3 className="text-base font-bold text-slate-900">
-              Grafo de Dependencias Estáticas
-            </h3>
-            <p className="text-xs text-slate-600 leading-relaxed">
-              Grafo relacional de 425 nodos conectando columnas, vistas, tablas y tareas de ejecución en AppSheet.
-            </p>
-          </div>
-
-          <a
-            href="/assets/aistudio/Pqrs_RM_IpRev-678335064_AppIntelligence_9134db94.json"
-            download="Pqrs_RM_AppIntelligence.json"
-            className="w-full py-2.5 px-3 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs rounded-xl flex items-center justify-center gap-2 transition-colors shadow-xs"
-          >
-            <Download className="w-3.5 h-3.5 text-indigo-400" />
-            <span>Descargar Intelligence (.json)</span>
-          </a>
-        </div>
-
-        {/* Card 6: Plan de Pruebas & Despliegue Generado */}
-        <div className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col justify-between space-y-4 hover:border-slate-300 transition-all">
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-violet-100 text-violet-800 font-mono">
-                PAQUETE QA / ENTREGABLE
-              </span>
-              <span className="text-[11px] text-slate-400">Acta & Despliegue</span>
-            </div>
-            <h3 className="text-base font-bold text-slate-900">
-              Acta de Entrega & Plan de Pruebas
-            </h3>
-            <p className="text-xs text-slate-600 leading-relaxed">
-              Documento consolidado con los 14 casos de prueba, estrategia de Go-Live y guía de mantenimiento preventivo.
-            </p>
-          </div>
-
-          <button
-            onClick={() => handleDownloadGenerated(documentOutlines[2])}
-            className="w-full py-2.5 px-3 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs rounded-xl flex items-center justify-center gap-2 transition-colors shadow-xs"
-          >
-            <Download className="w-3.5 h-3.5 text-violet-400" />
-            <span>Descargar Plan de Pruebas (.md)</span>
-          </button>
-        </div>
-
       </div>
 
       {/* Technical Writer Outlines Section */}
@@ -344,10 +345,10 @@ export const DownloadsView: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h2 className="text-lg font-bold text-slate-900">
-              Esquema Detallado de los 5 Documentos del Entregable
+              Estructura Editorial y Esquema de Documentos
             </h2>
             <p className="text-xs text-slate-500">
-              Estructura editorial y técnica formulada según las mejores prácticas de redacción técnica para software
+              Desglose estructurado de secciones oficiales para auditoría e interventoría de la Concesión Vial
             </p>
           </div>
 

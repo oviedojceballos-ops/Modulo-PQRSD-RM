@@ -158,12 +158,15 @@ export function evaluatePqrsSla(
 /**
  * Health Score calculation based on findings
  */
-export function calculateHealthScore(findings: { severity: 'high' | 'medium' | 'info' }[]): number {
+export function calculateHealthScore(findings: { severity: 'high' | 'medium' | 'info'; resolutionStatus?: string; isResolved?: boolean }[]): number {
   let penalty = 0;
   for (const f of findings) {
-    if (f.severity === 'high') penalty += 15;
-    else if (f.severity === 'medium') penalty += 5;
-    else if (f.severity === 'info') penalty += 1;
+    const isResolved = f.isResolved || f.resolutionStatus?.includes('Resuelto') || f.resolutionStatus?.includes('Validado');
+    if (!isResolved) {
+      if (f.severity === 'high') penalty += 15;
+      else if (f.severity === 'medium') penalty += 5;
+      else if (f.severity === 'info') penalty += 1;
+    }
   }
   const score = Math.max(0, 100 - penalty);
   return Math.round(score);

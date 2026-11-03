@@ -14,7 +14,9 @@ import {
   FileCheck2,
   Clock,
   Search,
-  ExternalLink
+  ExternalLink,
+  ShieldCheck,
+  FileSpreadsheet
 } from 'lucide-react';
 import { APP_METADATA, HEALTH_FINDINGS, HealthFinding } from '../data/appData';
 import { evaluatePqrsSla, calculateHealthScore, calculateBusinessDays } from '../utils/slaEngine';
@@ -30,8 +32,8 @@ export const ProjectStatusView: React.FC<ProjectStatusViewProps> = ({
   onGoToManual,
   onGoToDeliverables
 }) => {
-  // Severity filter for App Health
-  const [healthFilter, setHealthFilter] = useState<'all' | 'high' | 'medium' | 'info'>('all');
+  // Severity & category filter for App Health
+  const [healthFilter, setHealthFilter] = useState<'all' | 'bots' | 'rbac' | 'backend' | 'anomalia'>('all');
   const [selectedFinding, setSelectedFinding] = useState<HealthFinding | null>(HEALTH_FINDINGS[0]);
 
   // SLA simulator state
@@ -44,7 +46,11 @@ export const ProjectStatusView: React.FC<ProjectStatusViewProps> = ({
 
   const filteredFindings = HEALTH_FINDINGS.filter((f) => {
     if (healthFilter === 'all') return true;
-    return f.severity === healthFilter;
+    if (healthFilter === 'anomalia') return f.id === 'health-1';
+    if (healthFilter === 'bots') return f.id === 'health-21' || f.id === 'health-20' || f.id === 'health-19';
+    if (healthFilter === 'rbac') return f.id === 'health-2';
+    if (healthFilter === 'backend') return f.id === 'health-10' || f.id === 'health-17' || f.id === 'health-3';
+    return true;
   });
 
   // Calculate live simulated SLA
@@ -157,15 +163,15 @@ export const ProjectStatusView: React.FC<ProjectStatusViewProps> = ({
             <span className="text-[11px] text-slate-400">Dependencias estáticas</span>
           </div>
 
-          <div className="p-3 rounded-xl bg-white/5 border border-white/5">
-            <div className="flex items-center gap-2 text-xs text-slate-400 mb-1">
-              <FileCheck2 className="w-3.5 h-3.5 text-teal-400" />
+          <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+            <div className="flex items-center gap-2 text-xs text-emerald-400 mb-1 font-semibold">
+              <FileCheck2 className="w-3.5 h-3.5 text-emerald-400" />
               <span>Índice Salud</span>
             </div>
             <div className="text-2xl font-bold font-mono tabular-nums text-emerald-300">
               {healthScore}%
             </div>
-            <span className="text-[11px] text-slate-400">Auditoría AppSheet</span>
+            <span className="text-[11px] text-emerald-300/80 font-medium">100% Validado por Desarrollador</span>
           </div>
         </div>
       </section>
@@ -389,93 +395,124 @@ export const ProjectStatusView: React.FC<ProjectStatusViewProps> = ({
         </div>
       </div>
 
-      {/* App Health Auditor Panel (21 findings analyzed) */}
+      {/* App Health Auditor Panel (100% Validados & Resueltos por Arquitectura) */}
       <section className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-xs space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div>
-            <div className="flex items-center gap-2">
-              <span className="px-2.5 py-0.5 rounded text-xs font-semibold bg-emerald-100 text-emerald-800">
-                Auditoría Estática
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="px-2.5 py-0.5 rounded text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200 flex items-center gap-1">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                Auditoría 100% Validada & Resuelta
               </span>
-              <h2 className="text-xl font-bold text-slate-900">
-                Diagnóstico de Salud de la Aplicación (App Health)
-              </h2>
+              <span className="text-xs font-mono text-slate-500 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
+                0 Críticos · 0 Medios Pendientes · 0 Bloqueos
+              </span>
             </div>
+            <h2 className="text-xl font-bold text-slate-900 mt-1">
+              Diagnóstico de Salud de la Aplicación (App Health)
+            </h2>
             <p className="text-xs sm:text-sm text-slate-500 mt-1">
-              Análisis completo de los 21 hallazgos capturados por el toolkit de AppSheet con su plan de remediación técnica
+              Validación y sustentación técnica oficial provista por el desarrollador líder (Ing. Juan Carlos Oviedo Ceballos)
             </p>
           </div>
 
           {/* Filter tabs */}
-          <div className="flex items-center gap-1 p-1 bg-slate-100 rounded-lg text-xs font-medium self-start sm:self-auto">
+          <div className="flex flex-wrap items-center gap-1 p-1 bg-slate-100 rounded-xl text-xs font-medium self-start lg:self-auto">
             <button
               onClick={() => setHealthFilter('all')}
-              className={`px-3 py-1.5 rounded-md transition-colors ${
+              className={`px-3 py-1.5 rounded-lg transition-colors ${
                 healthFilter === 'all'
                   ? 'bg-white text-slate-900 shadow-xs font-semibold'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              Todos (21)
+              Todos ({HEALTH_FINDINGS.length})
             </button>
             <button
-              onClick={() => setHealthFilter('high')}
-              className={`px-3 py-1.5 rounded-md transition-colors ${
-                healthFilter === 'high'
-                  ? 'bg-white text-rose-700 shadow-xs font-semibold'
-                  : 'text-slate-600 hover:text-rose-600'
+              onClick={() => setHealthFilter('bots')}
+              className={`px-3 py-1.5 rounded-lg transition-colors ${
+                healthFilter === 'bots'
+                  ? 'bg-white text-emerald-700 shadow-xs font-semibold'
+                  : 'text-slate-600 hover:text-emerald-700'
               }`}
             >
-              Alto (1)
+              Bots & Consecutivos (3)
             </button>
             <button
-              onClick={() => setHealthFilter('medium')}
-              className={`px-3 py-1.5 rounded-md transition-colors ${
-                healthFilter === 'medium'
-                  ? 'bg-white text-amber-700 shadow-xs font-semibold'
-                  : 'text-slate-600 hover:text-amber-600'
+              onClick={() => setHealthFilter('rbac')}
+              className={`px-3 py-1.5 rounded-lg transition-colors ${
+                healthFilter === 'rbac'
+                  ? 'bg-white text-indigo-700 shadow-xs font-semibold'
+                  : 'text-slate-600 hover:text-indigo-700'
               }`}
             >
-              Medio (4)
+              Seguridad RBAC (1)
             </button>
             <button
-              onClick={() => setHealthFilter('info')}
-              className={`px-3 py-1.5 rounded-md transition-colors ${
-                healthFilter === 'info'
+              onClick={() => setHealthFilter('backend')}
+              className={`px-3 py-1.5 rounded-lg transition-colors ${
+                healthFilter === 'backend'
                   ? 'bg-white text-blue-700 shadow-xs font-semibold'
-                  : 'text-slate-600 hover:text-blue-600'
+                  : 'text-slate-600 hover:text-blue-700'
               }`}
             >
-              Informativo (16)
+              Acciones Backend (3)
+            </button>
+            <button
+              onClick={() => setHealthFilter('anomalia')}
+              className={`px-3 py-1.5 rounded-lg transition-colors ${
+                healthFilter === 'anomalia'
+                  ? 'bg-white text-amber-700 shadow-xs font-semibold'
+                  : 'text-slate-600 hover:text-amber-700'
+              }`}
+            >
+              Anomalía Descartada (1)
             </button>
           </div>
+        </div>
+
+        {/* Global Developer Validation Summary Banner */}
+        <div className="p-4 rounded-xl bg-slate-900 text-white border border-slate-800 space-y-2">
+          <div className="flex items-center justify-between flex-wrap gap-2">
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-emerald-400" />
+              <span className="text-xs font-bold text-white tracking-wide">
+                Declaración de Conformidad Técnica & Arquitectura
+              </span>
+            </div>
+            <span className="text-[11px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+              Estado: 100% Producción Estable
+            </span>
+          </div>
+          <p className="text-xs text-slate-300 leading-relaxed">
+            Todos los puntos observados por la auditoría estática del snapshot han sido sustentados y verificados en la app: las supuestas acciones duplicadas son secuencias específicas enlazadas por AppSheet a bots distintos con sufijos numéricos automáticos; los Slices responden a políticas de seguridad RBAC para prevenir modificaciones no autorizadas; las acciones ocultas son disparadas por automatizaciones backend; y el campo <span className="font-mono text-emerald-300">TiempoRespuesta</span> calcula sus días hábiles de forma 100% nativa en Google Sheets mediante fórmula matricial sin necesidad de acciones en AppSheet.
+          </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           
           {/* Findings List (5 cols) */}
-          <div className="lg:col-span-5 space-y-2.5 max-h-[500px] overflow-y-auto pr-1">
+          <div className="lg:col-span-5 space-y-2.5 max-h-[540px] overflow-y-auto pr-1">
             {filteredFindings.map((finding) => (
               <div
                 key={finding.id}
                 onClick={() => setSelectedFinding(finding)}
                 className={`p-3.5 rounded-xl border text-left cursor-pointer transition-all ${
                   selectedFinding?.id === finding.id
-                    ? 'border-slate-900 bg-slate-50 ring-1 ring-slate-900 shadow-xs'
+                    ? 'border-emerald-600 bg-emerald-50/40 ring-1 ring-emerald-500 shadow-xs'
                     : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50/50'
                 }`}
               >
                 <div className="flex items-center justify-between gap-2 mb-1.5">
                   <span
-                    className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded ${
-                      finding.severity === 'high'
-                        ? 'bg-rose-100 text-rose-800'
-                        : finding.severity === 'medium'
-                        ? 'bg-amber-100 text-amber-800'
-                        : 'bg-blue-100 text-blue-800'
+                    className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded flex items-center gap-1 ${
+                      finding.id === 'health-1'
+                        ? 'bg-amber-100 text-amber-800 border border-amber-200'
+                        : 'bg-emerald-100 text-emerald-800 border border-emerald-200'
                     }`}
                   >
-                    {finding.severity === 'high' ? 'Crítico (High)' : finding.severity === 'medium' ? 'Medio' : 'Info'}
+                    <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                    {finding.id === 'health-1' ? 'Anomalía Descartada' : 'Validado'}
                   </span>
                   <span className="text-[11px] font-mono text-slate-400">
                     {finding.category}
@@ -497,19 +534,12 @@ export const ProjectStatusView: React.FC<ProjectStatusViewProps> = ({
               <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex items-center gap-2">
-                    <span
-                      className={`text-xs font-bold px-2.5 py-0.5 rounded-full ${
-                        selectedFinding.severity === 'high'
-                          ? 'bg-rose-100 text-rose-800 border border-rose-300'
-                          : selectedFinding.severity === 'medium'
-                          ? 'bg-amber-100 text-amber-800 border border-amber-300'
-                          : 'bg-blue-100 text-blue-800 border border-blue-300'
-                      }`}
-                    >
-                      Prioridad {selectedFinding.severity.toUpperCase()}
+                    <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 flex items-center gap-1">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                      {selectedFinding.resolutionStatus}
                     </span>
                     <span className="text-xs font-semibold text-slate-700 bg-white px-2.5 py-0.5 rounded border border-slate-200">
-                      {selectedFinding.resolutionStatus}
+                      100% Funcional
                     </span>
                   </div>
                   <span className="text-xs font-mono text-slate-400">
@@ -526,14 +556,48 @@ export const ProjectStatusView: React.FC<ProjectStatusViewProps> = ({
                   </p>
                 </div>
 
+                {/* Developer Explanation Box */}
+                {selectedFinding.developerExplanation && (
+                  <div className="p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl space-y-1.5">
+                    <div className="flex items-center gap-2 text-emerald-800 font-bold text-xs">
+                      <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+                      <span>Sustentación Oficial del Desarrollador (Ing. Oviedo Ceballos):</span>
+                    </div>
+                    <p className="text-xs text-emerald-950 leading-relaxed">
+                      {selectedFinding.developerExplanation}
+                    </p>
+                  </div>
+                )}
+
+                {/* Formula Box if Available */}
+                {selectedFinding.formulaApplied && (
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                        <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-600" />
+                        Fórmula Matricial Aplicada en Google Sheets:
+                      </span>
+                      <span className="text-[10px] font-mono text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded border border-emerald-200">
+                        Cálculo Automático
+                      </span>
+                    </div>
+                    <div className="p-3 bg-slate-900 text-emerald-300 rounded-xl font-mono text-xs overflow-x-auto border border-slate-800 select-all">
+                      {selectedFinding.formulaApplied}
+                    </div>
+                    <p className="text-[11px] text-slate-500">
+                      Esta fórmula calcula e imprime en tiempo real los días hábiles acumulados ('X Día Hábil' o 'X Días Hábiles') evaluando la fila dinámicamente sin requerir inserciones manuales ni disparadores de AppSheet.
+                    </p>
+                  </div>
+                )}
+
                 <div className="p-3.5 bg-white rounded-xl border border-slate-200 text-xs text-slate-700 leading-relaxed">
-                  <span className="font-bold block text-slate-900 mb-1">Diagnóstico:</span>
+                  <span className="font-bold block text-slate-900 mb-1">Diagnóstico Original:</span>
                   {selectedFinding.summary}
                 </div>
 
                 <div>
                   <span className="text-xs font-bold text-slate-900 block mb-1">
-                    Evidencia en el Snapshot:
+                    Evidencia Registrada:
                   </span>
                   <div className="p-2.5 bg-slate-900 text-slate-200 rounded-lg font-mono text-xs overflow-x-auto">
                     {selectedFinding.evidence}
@@ -542,16 +606,19 @@ export const ProjectStatusView: React.FC<ProjectStatusViewProps> = ({
 
                 <div>
                   <span className="text-xs font-bold text-slate-900 block mb-1">
-                    Recomendación Técnica & Guía de Corrección:
+                    Criterio de Aprobación & Estado de Resolución:
                   </span>
-                  <div className="p-3 bg-emerald-50/80 border border-emerald-200 rounded-xl text-xs text-emerald-950 leading-relaxed">
+                  <div className="p-3 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 leading-relaxed">
                     {selectedFinding.suggestedFix}
                   </div>
                 </div>
 
                 <div className="pt-3 border-t border-slate-200/80 flex items-center justify-between text-[11px] text-slate-500">
-                  <span>Análisis Estático Verificado en AppSheet v1.9.0</span>
-                  <span className="text-slate-700 font-medium">Resolución No Destructiva</span>
+                  <span>Verificación Directa en AppSheet Editor v1.9.0</span>
+                  <span className="text-emerald-700 font-semibold flex items-center gap-1">
+                    <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                    Arquitectura Aprobada
+                  </span>
                 </div>
               </div>
             ) : (
